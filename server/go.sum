@@ -1,0 +1,6 @@
+github.com/dave/jennifer v1.7.0 h1:uRbSBH9UTS64yXbh4FrMHfgfY762RD+C7bUPKODpSJE=
+github.com/dave/jennifer v1.7.0/go.mod h1:nXbxhEmQfOZhWml3D1cDK5M1FLnMSozpbFN/m3RmGZc=
+github.com/onfirebyte/glutys v0.0.0-20231202122524-7cf3cea73b47 h1:lRqW8AH2St+0Iow1MTbgn1RwurCb/bbqsXIbBbDPezE=
+github.com/onfirebyte/glutys v0.0.0-20231202122524-7cf3cea73b47/go.mod h1:uO2ED9lHY6b1rmJWKgdV+6CIybZCzFCX1+alSo2N+vU=
+github.com/onfirebyte/glutys v0.1.0 h1:hw644chZpN22NdlvBx4yd6eDT8V4V/8YoLT+ghARQJ4=
+github.com/onfirebyte/glutys v0.1.0/go.mod h1:uO2ED9lHY6b1rmJWKgdV+6CIybZCzFCX1+alSo2N+vU=
