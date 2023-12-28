@@ -2,6 +2,7 @@ package main
 
 import (
 	"os"
+	"server/reqcontext"
 	"server/route"
 
 	"github.com/onfirebyte/glutys"
@@ -12,7 +13,7 @@ func main() {
 	builder := glutys.Builder{
 		GeneratePath: "server/generated/routegen",
 	}
-	// builder.AddContextParser(hello.GetUserContext)
+	builder.AddContextParser(reqcontext.ParseUsername)
 
 	builder.CreateRouter(route.RootRoute)
 
