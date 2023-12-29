@@ -2,7 +2,6 @@ package todolist
 
 import (
 	"errors"
-	"fmt"
 
 	"server/reqcontext"
 )
@@ -26,17 +25,10 @@ func Add(user reqcontext.Username, title string, tag []string) Todo {
 	return todo
 }
 
-func BulkAdd(user reqcontext.Username, titles []*string) ([]Todo, error) {
-	if titles == nil {
-		return nil, errors.New("titles is nil")
-	}
+func BulkAdd(user reqcontext.Username, titles []string) ([]Todo, error) {
 	var res []Todo
 	for _, title := range titles {
-		if title == nil {
-			fmt.Println("title is nil")
-			continue
-		}
-		res = append(res, Add(user, *title, nil))
+		res = append(res, Add(user, title, nil))
 	}
 	return res, nil
 }
@@ -55,8 +47,10 @@ func GetAll(user reqcontext.Username) []Todo {
 }
 
 func Update(user reqcontext.Username, todo *Todo) (Todo, error) {
+	// pointer type is act as nullable
+	// type *Todo is converted to Todo | null 
 	if todo == nil {
-		return Todo{}, errors.New("todo is nil")
+		return Todo{}, errors.New("todo is null")
 	}
 	for i, v := range todos[string(user)] {
 		if v.Id == todo.Id {

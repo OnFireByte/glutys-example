@@ -11,68 +11,6 @@ import (
 	todolist "server/route/todolist"
 )
 
-func TodolistBulkAddHandler(w http.ResponseWriter, r *http.Request, body *glutys.RequestBody) {
-	Username0, errUsername0 := reqcontext.ParseUsername(r)
-	if errUsername0 != nil {
-		response := map[string]interface{}{
-			"error": "Invalid Context",
-			"msg":   errUsername0.Error(),
-		}
-		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(response)
-		return
-	}
-	var string1 []*string
-	errstring1 := json.Unmarshal(body.Args[0], &string1)
-	if errstring1 != nil {
-		response := map[string]interface{}{
-			"error": "Invalid JSON",
-			"msg":   errstring1.Error(),
-		}
-		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(response)
-		return
-	}
-	res, err := todolist.BulkAdd(Username0, string1)
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(map[string]interface{}{
-			"error": "Bad Request",
-			"msg":   err.Error(),
-		})
-		return
-	}
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(res)
-	return
-}
-func TodolistGetHandler(w http.ResponseWriter, r *http.Request, body *glutys.RequestBody) {
-	Username0, errUsername0 := reqcontext.ParseUsername(r)
-	if errUsername0 != nil {
-		response := map[string]interface{}{
-			"error": "Invalid Context",
-			"msg":   errUsername0.Error(),
-		}
-		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(response)
-		return
-	}
-	var int1 int
-	errint1 := json.Unmarshal(body.Args[0], &int1)
-	if errint1 != nil {
-		response := map[string]interface{}{
-			"error": "Invalid JSON",
-			"msg":   errint1.Error(),
-		}
-		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(response)
-		return
-	}
-	res := todolist.Get(Username0, int1)
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(res)
-	return
-}
 func TodolistGetAllHandler(w http.ResponseWriter, r *http.Request, body *glutys.RequestBody) {
 	Username0, errUsername0 := reqcontext.ParseUsername(r)
 	if errUsername0 != nil {
@@ -175,6 +113,68 @@ func TodolistAddHandler(w http.ResponseWriter, r *http.Request, body *glutys.Req
 		return
 	}
 	res := todolist.Add(Username0, string1, string2)
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(res)
+	return
+}
+func TodolistBulkAddHandler(w http.ResponseWriter, r *http.Request, body *glutys.RequestBody) {
+	Username0, errUsername0 := reqcontext.ParseUsername(r)
+	if errUsername0 != nil {
+		response := map[string]interface{}{
+			"error": "Invalid Context",
+			"msg":   errUsername0.Error(),
+		}
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(response)
+		return
+	}
+	var string1 []string
+	errstring1 := json.Unmarshal(body.Args[0], &string1)
+	if errstring1 != nil {
+		response := map[string]interface{}{
+			"error": "Invalid JSON",
+			"msg":   errstring1.Error(),
+		}
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(response)
+		return
+	}
+	res, err := todolist.BulkAdd(Username0, string1)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(map[string]interface{}{
+			"error": "Bad Request",
+			"msg":   err.Error(),
+		})
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(res)
+	return
+}
+func TodolistGetHandler(w http.ResponseWriter, r *http.Request, body *glutys.RequestBody) {
+	Username0, errUsername0 := reqcontext.ParseUsername(r)
+	if errUsername0 != nil {
+		response := map[string]interface{}{
+			"error": "Invalid Context",
+			"msg":   errUsername0.Error(),
+		}
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(response)
+		return
+	}
+	var int1 int
+	errint1 := json.Unmarshal(body.Args[0], &int1)
+	if errint1 != nil {
+		response := map[string]interface{}{
+			"error": "Invalid JSON",
+			"msg":   errint1.Error(),
+		}
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(response)
+		return
+	}
+	res := todolist.Get(Username0, int1)
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(res)
 	return
