@@ -13,9 +13,7 @@ import (
 func main() {
 	fmt.Println("Generating routes...")
 
-	builder := glutys.Builder{
-		GeneratePath: "server/generated/routegen",
-	}
+	builder := glutys.NewBuilder("server/generated/routegen")
 	builder.AddContextParser(reqcontext.ParseUsername)
 
 	builder.CreateRouter(route.RootRoute)

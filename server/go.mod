@@ -6,5 +6,3 @@ require (
 	github.com/dave/jennifer v1.7.0 // indirect
 	github.com/onfirebyte/glutys v0.1.0
 )
-
-replace github.com/onfirebyte/glutys => ../../../go/glutys
