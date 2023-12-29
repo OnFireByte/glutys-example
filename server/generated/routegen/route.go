@@ -11,24 +11,7 @@ import (
 	todolist "server/route/todolist"
 )
 
-func MathFibHandler(w http.ResponseWriter, r *http.Request, body *glutys.RequestBody) {
-	var int0 int
-	errint0 := json.Unmarshal(body.Args[0], &int0)
-	if errint0 != nil {
-		response := map[string]interface{}{
-			"error": "Invalid JSON",
-			"msg":   errint0.Error(),
-		}
-		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(response)
-		return
-	}
-	res := math.Fib(int0)
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(res)
-	return
-}
-func TodolistAddHandler(w http.ResponseWriter, r *http.Request, body *glutys.RequestBody) {
+func TodolistBulkAddHandler(w http.ResponseWriter, r *http.Request, body *glutys.RequestBody) {
 	Username0, errUsername0 := reqcontext.ParseUsername(r)
 	if errUsername0 != nil {
 		response := map[string]interface{}{
@@ -39,7 +22,7 @@ func TodolistAddHandler(w http.ResponseWriter, r *http.Request, body *glutys.Req
 		json.NewEncoder(w).Encode(response)
 		return
 	}
-	var string1 string
+	var string1 []*string
 	errstring1 := json.Unmarshal(body.Args[0], &string1)
 	if errstring1 != nil {
 		response := map[string]interface{}{
@@ -50,7 +33,15 @@ func TodolistAddHandler(w http.ResponseWriter, r *http.Request, body *glutys.Req
 		json.NewEncoder(w).Encode(response)
 		return
 	}
-	res := todolist.Add(Username0, string1)
+	res, err := todolist.BulkAdd(Username0, string1)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(map[string]interface{}{
+			"error": "Bad Request",
+			"msg":   err.Error(),
+		})
+		return
+	}
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(res)
 	return
@@ -109,40 +100,18 @@ func TodolistUpdateHandler(w http.ResponseWriter, r *http.Request, body *glutys.
 		json.NewEncoder(w).Encode(response)
 		return
 	}
-	var int1 int
-	errint1 := json.Unmarshal(body.Args[0], &int1)
-	if errint1 != nil {
+	var todo1 *todolist.Todo
+	errtodo1 := json.Unmarshal(body.Args[0], &todo1)
+	if errtodo1 != nil {
 		response := map[string]interface{}{
 			"error": "Invalid JSON",
-			"msg":   errint1.Error(),
+			"msg":   errtodo1.Error(),
 		}
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(response)
 		return
 	}
-	var string2 string
-	errstring2 := json.Unmarshal(body.Args[1], &string2)
-	if errstring2 != nil {
-		response := map[string]interface{}{
-			"error": "Invalid JSON",
-			"msg":   errstring2.Error(),
-		}
-		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(response)
-		return
-	}
-	var bool3 bool
-	errbool3 := json.Unmarshal(body.Args[2], &bool3)
-	if errbool3 != nil {
-		response := map[string]interface{}{
-			"error": "Invalid JSON",
-			"msg":   errbool3.Error(),
-		}
-		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(response)
-		return
-	}
-	res, err := todolist.Update(Username0, int1, string2, bool3)
+	res, err := todolist.Update(Username0, todo1)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		json.NewEncoder(w).Encode(map[string]interface{}{
@@ -155,15 +124,71 @@ func TodolistUpdateHandler(w http.ResponseWriter, r *http.Request, body *glutys.
 	json.NewEncoder(w).Encode(res)
 	return
 }
+func MathFibHandler(w http.ResponseWriter, r *http.Request, body *glutys.RequestBody) {
+	var int0 int
+	errint0 := json.Unmarshal(body.Args[0], &int0)
+	if errint0 != nil {
+		response := map[string]interface{}{
+			"error": "Invalid JSON",
+			"msg":   errint0.Error(),
+		}
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(response)
+		return
+	}
+	res := math.Fib(int0)
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(res)
+	return
+}
+func TodolistAddHandler(w http.ResponseWriter, r *http.Request, body *glutys.RequestBody) {
+	Username0, errUsername0 := reqcontext.ParseUsername(r)
+	if errUsername0 != nil {
+		response := map[string]interface{}{
+			"error": "Invalid Context",
+			"msg":   errUsername0.Error(),
+		}
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(response)
+		return
+	}
+	var string1 string
+	errstring1 := json.Unmarshal(body.Args[0], &string1)
+	if errstring1 != nil {
+		response := map[string]interface{}{
+			"error": "Invalid JSON",
+			"msg":   errstring1.Error(),
+		}
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(response)
+		return
+	}
+	var string2 []string
+	errstring2 := json.Unmarshal(body.Args[1], &string2)
+	if errstring2 != nil {
+		response := map[string]interface{}{
+			"error": "Invalid JSON",
+			"msg":   errstring2.Error(),
+		}
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(response)
+		return
+	}
+	res := todolist.Add(Username0, string1, string2)
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(res)
+	return
+}
 
 type HandlerFunc func(http.ResponseWriter, *http.Request, *glutys.RequestBody)
 
 var pathMap = map[string]HandlerFunc{
-	"math.fib":        MathFibHandler,
-	"todolist.add":    TodolistAddHandler,
-	"todolist.get":    TodolistGetHandler,
-	"todolist.getAll": TodolistGetAllHandler,
-	"todolist.update": TodolistUpdateHandler,
+	"math.fib":         MathFibHandler,
+	"todolist.add":     TodolistAddHandler,
+	"todolist.bulkAdd": TodolistBulkAddHandler,
+	"todolist.get":     TodolistGetHandler,
+	"todolist.getAll":  TodolistGetAllHandler,
+	"todolist.update":  TodolistUpdateHandler,
 }
 
 func RouteHandler(w http.ResponseWriter, r *http.Request) {

@@ -1,7 +1,9 @@
 package main
 
 import (
+	"fmt"
 	"os"
+
 	"server/reqcontext"
 	"server/route"
 
@@ -9,6 +11,7 @@ import (
 )
 
 func main() {
+	fmt.Println("Generating routes...")
 
 	builder := glutys.Builder{
 		GeneratePath: "server/generated/routegen",
@@ -32,4 +35,6 @@ func main() {
 	}
 
 	tsFile.WriteString(tsFileString)
+
+	fmt.Println("Done!")
 }

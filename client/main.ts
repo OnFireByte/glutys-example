@@ -1,6 +1,6 @@
 import axios, { AxiosError } from "axios";
 import { CreateAPIClient } from "glutys-client";
-import { GlutysContract, TodolistTodo } from "./generated/contract";
+import { GlutysContract } from "./generated/contract";
 
 const instance = axios.create({
     baseURL: "http://localhost:8080/api",
@@ -15,10 +15,10 @@ async function main() {
     try {
         console.log("Fetching");
 
-        const req: Promise<TodolistTodo>[] = [];
+        const req: Promise<any>[] = [];
 
         for (let i = 0; i < 10; i++) {
-            const p = api.todolist.add(`Todo ${i}`);
+            const p = api.todolist.add(`Todo ${i}`, []);
             req.push(p);
         }
 
