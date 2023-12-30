@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"server/di/cache"
 	"server/reqcontext"
 	"server/route"
 
@@ -15,6 +16,9 @@ func main() {
 
 	builder := glutys.NewBuilder("server/generated/routegen")
 	builder.AddContextParser(reqcontext.ParseUsername)
+
+	// You must use pointer to type, not the type itself
+	builder.AddDependencyType((*cache.Cache)(nil))
 
 	builder.CreateRouter(route.RootRoute)
 

@@ -6,3 +6,5 @@ github.com/onfirebyte/glutys v0.1.0 h1:hw644chZpN22NdlvBx4yd6eDT8V4V/8YoLT+ghARQ
 github.com/onfirebyte/glutys v0.1.0/go.mod h1:uO2ED9lHY6b1rmJWKgdV+6CIybZCzFCX1+alSo2N+vU=
 github.com/onfirebyte/glutys v0.3.0 h1:Mk15D5pfCbojBb335P8oheQ0hS5vV6puYFwXyrf5oHw=
 github.com/onfirebyte/glutys v0.3.0/go.mod h1:uO2ED9lHY6b1rmJWKgdV+6CIybZCzFCX1+alSo2N+vU=
+github.com/onfirebyte/glutys v0.4.0 h1:ijl7RCoKmzHGd7B5hLP1dMYFTwOmVGHHabZdT/bbM8g=
+github.com/onfirebyte/glutys v0.4.0/go.mod h1:uO2ED9lHY6b1rmJWKgdV+6CIybZCzFCX1+alSo2N+vU=
