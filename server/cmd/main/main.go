@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"server/di/cache"
-	"server/generated/routegen"
+	"github.com/OnFireByte/glutys-example/server/di/cache"
+	"github.com/OnFireByte/glutys-example/server/generated/routegen"
 )
 
 func main() {

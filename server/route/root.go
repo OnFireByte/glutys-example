@@ -1,8 +1,8 @@
 package route
 
 import (
-	"server/route/math"
-	"server/route/todolist"
+	"github.com/OnFireByte/glutys-example/server/route/math"
+	"github.com/OnFireByte/glutys-example/server/route/todolist"
 )
 
 var RootRoute = map[string][]any{

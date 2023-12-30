@@ -2,11 +2,10 @@ package main
 
 import (
 	"fmt"
-	"os"
 
-	"server/di/cache"
-	"server/reqcontext"
-	"server/route"
+	"github.com/OnFireByte/glutys-example/server/di/cache"
+	"github.com/OnFireByte/glutys-example/server/reqcontext"
+	"github.com/OnFireByte/glutys-example/server/route"
 
 	"github.com/onfirebyte/glutys"
 )
@@ -14,7 +13,12 @@ import (
 func main() {
 	fmt.Println("Generating routes...")
 
-	builder := glutys.NewBuilder("server/generated/routegen")
+	builder := glutys.NewBuilder(
+		"github.come/user/example/generated/routegen",
+		"generated/routegen/route.go",
+		"../client/generated/contract.ts",
+	)
+
 	builder.AddContextParser(reqcontext.ParseUsername)
 
 	// You must use pointer to type, not the type itself
@@ -22,21 +26,7 @@ func main() {
 
 	builder.CreateRouter(route.RootRoute)
 
-	goFileString, tsFileString := builder.Build()
-
-	file, err := os.Create("generated/routegen/route.go")
-	if err != nil {
-		panic(err)
-	}
-
-	file.WriteString(goFileString)
-
-	tsFile, err := os.Create("../client/generated/contract.ts")
-	if err != nil {
-		panic(err)
-	}
-
-	tsFile.WriteString(tsFileString)
+	builder.Build()
 
 	fmt.Println("Done!")
 }

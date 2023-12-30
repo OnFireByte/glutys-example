@@ -3,7 +3,7 @@ package math
 import (
 	"strconv"
 
-	"server/di/cache"
+	"github.com/OnFireByte/glutys-example/server/di/cache"
 )
 
 func Fib(cache cache.Cache, n int) int {

@@ -3,7 +3,7 @@ package todolist
 import (
 	"errors"
 
-	"server/reqcontext"
+	"github.com/OnFireByte/glutys-example/server/reqcontext"
 )
 
 type Todo struct {

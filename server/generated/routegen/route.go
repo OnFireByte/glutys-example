@@ -6,10 +6,10 @@ import (
 	"encoding/json"
 	glutys "github.com/onfirebyte/glutys"
 	"net/http"
-	cache "server/di/cache"
-	reqcontext "server/reqcontext"
-	math "server/route/math"
-	todolist "server/route/todolist"
+	cache "github.com/OnFireByte/glutys-example/server/di/cache"
+	reqcontext "github.com/OnFireByte/glutys-example/server/reqcontext"
+	math "github.com/OnFireByte/glutys-example/server/route/math"
+	todolist "github.com/OnFireByte/glutys-example/server/route/todolist"
 )
 
 type Handler struct {
