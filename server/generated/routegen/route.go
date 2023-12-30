@@ -4,12 +4,12 @@ package routegen
 
 import (
 	"encoding/json"
-	glutys "github.com/onfirebyte/glutys"
-	"net/http"
 	cache "github.com/OnFireByte/glutys-example/server/di/cache"
 	reqcontext "github.com/OnFireByte/glutys-example/server/reqcontext"
 	math "github.com/OnFireByte/glutys-example/server/route/math"
 	todolist "github.com/OnFireByte/glutys-example/server/route/todolist"
+	glutys "github.com/onfirebyte/glutys"
+	"net/http"
 )
 
 type Handler struct {
@@ -18,57 +18,6 @@ type Handler struct {
 
 func NewHandler(cache cache.Cache) *Handler {
 	return &Handler{Cache: cache}
-}
-func (h *Handler) TodolistGetAllHandler(w http.ResponseWriter, r *http.Request, body *glutys.RequestBody) {
-	Username0, errUsername0 := reqcontext.ParseUsername(r)
-	if errUsername0 != nil {
-		response := map[string]interface{}{
-			"error": "Invalid Context",
-			"msg":   errUsername0.Error(),
-		}
-		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(response)
-		return
-	}
-	res := todolist.GetAll(Username0)
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(res)
-	return
-}
-func (h *Handler) TodolistUpdateHandler(w http.ResponseWriter, r *http.Request, body *glutys.RequestBody) {
-	Username0, errUsername0 := reqcontext.ParseUsername(r)
-	if errUsername0 != nil {
-		response := map[string]interface{}{
-			"error": "Invalid Context",
-			"msg":   errUsername0.Error(),
-		}
-		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(response)
-		return
-	}
-	var todo1 *todolist.Todo
-	errtodo1 := json.Unmarshal(body.Args[0], &todo1)
-	if errtodo1 != nil {
-		response := map[string]interface{}{
-			"error": "Invalid JSON",
-			"msg":   errtodo1.Error(),
-		}
-		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(response)
-		return
-	}
-	res, err := todolist.Update(Username0, todo1)
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(map[string]interface{}{
-			"error": "Bad Request",
-			"msg":   err.Error(),
-		})
-		return
-	}
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(res)
-	return
 }
 func (h *Handler) MathFibHandler(w http.ResponseWriter, r *http.Request, body *glutys.RequestBody) {
 	var int1 int
@@ -187,9 +136,57 @@ func (h *Handler) TodolistGetHandler(w http.ResponseWriter, r *http.Request, bod
 	json.NewEncoder(w).Encode(res)
 	return
 }
-
-type HandlerFunc func(http.ResponseWriter, *http.Request, *glutys.RequestBody)
-
+func (h *Handler) TodolistGetAllHandler(w http.ResponseWriter, r *http.Request, body *glutys.RequestBody) {
+	Username0, errUsername0 := reqcontext.ParseUsername(r)
+	if errUsername0 != nil {
+		response := map[string]interface{}{
+			"error": "Invalid Context",
+			"msg":   errUsername0.Error(),
+		}
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(response)
+		return
+	}
+	res := todolist.GetAll(Username0)
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(res)
+	return
+}
+func (h *Handler) TodolistUpdateHandler(w http.ResponseWriter, r *http.Request, body *glutys.RequestBody) {
+	Username0, errUsername0 := reqcontext.ParseUsername(r)
+	if errUsername0 != nil {
+		response := map[string]interface{}{
+			"error": "Invalid Context",
+			"msg":   errUsername0.Error(),
+		}
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(response)
+		return
+	}
+	var todo1 *todolist.Todo
+	errtodo1 := json.Unmarshal(body.Args[0], &todo1)
+	if errtodo1 != nil {
+		response := map[string]interface{}{
+			"error": "Invalid JSON",
+			"msg":   errtodo1.Error(),
+		}
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(response)
+		return
+	}
+	res, err := todolist.Update(Username0, todo1)
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(map[string]interface{}{
+			"error": "Bad Request",
+			"msg":   err.Error(),
+		})
+		return
+	}
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(res)
+	return
+}
 func (h *Handler) Handle(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	body := glutys.RequestBody{}

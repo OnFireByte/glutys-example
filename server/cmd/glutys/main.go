@@ -21,12 +21,12 @@ func main() {
 
 	builder.AddContextParser(reqcontext.ParseUsername)
 
-	// You must use pointer to type, not the type itself
+	// You must use pointer to type that you want to use, not the type itself.
+	// For example, if you want to use *FooStruct, you must use (**FooStruct)(nil).
+	// Or if you want to use Bar interface, you must use (*Bar)(nil)
 	builder.AddDependencyType((*cache.Cache)(nil))
 
 	builder.CreateRouter(route.RootRoute)
 
 	builder.Build()
-
-	fmt.Println("Done!")
 }
