@@ -3,14 +3,25 @@
 package routegen
 
 import (
-	"encoding/json"
 	cache "github.com/OnFireByte/glutys-example/server/di/cache"
 	reqcontext "github.com/OnFireByte/glutys-example/server/reqcontext"
 	math "github.com/OnFireByte/glutys-example/server/route/math"
 	todolist "github.com/OnFireByte/glutys-example/server/route/todolist"
 	glutys "github.com/onfirebyte/glutys"
+	jsoniter "github.com/onfirebyte/jsoniter"
 	"net/http"
 )
+
+var json jsoniter.API
+
+func init() {
+	json = jsoniter.Config{
+		EscapeHTML:             true,
+		SortMapKeys:            true,
+		ValidateJsonRawMessage: true,
+		EmptyCollections:       true,
+	}.Froze()
+}
 
 type Handler struct {
 	Cache cache.Cache
@@ -18,23 +29,6 @@ type Handler struct {
 
 func NewHandler(cache cache.Cache) *Handler {
 	return &Handler{Cache: cache}
-}
-func (h *Handler) MathFibHandler(w http.ResponseWriter, r *http.Request, body *glutys.RequestBody) {
-	var int1 int
-	errint1 := json.Unmarshal(body.Args[0], &int1)
-	if errint1 != nil {
-		response := map[string]interface{}{
-			"error": "Invalid JSON",
-			"msg":   errint1.Error(),
-		}
-		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(response)
-		return
-	}
-	res := math.Fib(h.Cache, int1)
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(res)
-	return
 }
 func (h *Handler) TodolistAddHandler(w http.ResponseWriter, r *http.Request, body *glutys.RequestBody) {
 	Username0, errUsername0 := reqcontext.ParseUsername(r)
@@ -183,6 +177,23 @@ func (h *Handler) TodolistUpdateHandler(w http.ResponseWriter, r *http.Request, 
 		})
 		return
 	}
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(res)
+	return
+}
+func (h *Handler) MathFibHandler(w http.ResponseWriter, r *http.Request, body *glutys.RequestBody) {
+	var int1 int
+	errint1 := json.Unmarshal(body.Args[0], &int1)
+	if errint1 != nil {
+		response := map[string]interface{}{
+			"error": "Invalid JSON",
+			"msg":   errint1.Error(),
+		}
+		w.WriteHeader(http.StatusBadRequest)
+		json.NewEncoder(w).Encode(response)
+		return
+	}
+	res := math.Fib(h.Cache, int1)
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(res)
 	return
